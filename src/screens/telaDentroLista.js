@@ -2,13 +2,17 @@ import { Text, View, TouchableOpacity, ScrollView} from 'react-native';
 import Icon from '@expo/vector-icons/Feather';
 import CardTarefa from '../components/cardTarefa';
 
-export default function TelaDentroLista() {
+export default function TelaDentroLista({navigation}) {
     return(
         <View className='h-full px-5 mt-20 pb-14'>
             <View>
-                <TouchableOpacity activeOpacity={0.50} className='flex-row align-center items-center'>
+                <TouchableOpacity 
+                onPress={() => navigation.navigate('TelaLista')}
+                activeOpacity={0.50} 
+                className='flex-row align-center items-center'>
                     <Icon name="chevron-left" size={26} color="#d946ef" />
-                    <Text className='text-fuchsia-500 text-lg font-poppinsRegular'>Voltar</Text>
+                    <Text 
+                    className='text-fuchsia-500 text-lg font-poppinsRegular'>Voltar</Text>
                 </TouchableOpacity>
             </View>
 
