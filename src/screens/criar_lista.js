@@ -34,7 +34,7 @@ export default function CriarLista ({navigation}) {
 
             <View>
                 <Text className='text-xl mt-5 font-poppinsMedium'>Nome da lista</Text>
-                <TextInput className='border border-gray-300 mt-4 rounded-md p-3 py-5 text-xl' placeholder='Nome da sua nova lista...' maxLength={28} value={Nome} onChangeText={(text) => setNome(text)}/>
+                <TextInput className='border border-gray-300 mt-4 rounded-md p-3 py-5 text-xl bg-white' placeholder='Nome da sua nova lista...' maxLength={28} value={Nome} onChangeText={(text) => setNome(text)}/>
             </View>
 
             <View className='items-center justify-center'>

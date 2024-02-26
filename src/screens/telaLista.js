@@ -26,7 +26,6 @@ export default function TelaLista({navigation}) {
                 activeOpacity={0.60}
                 onPress={() => navigation.navigate('TelaDentroLista')}>
                     <CardLista />
-
                 </TouchableOpacity>
               </View>
             </ScrollView>

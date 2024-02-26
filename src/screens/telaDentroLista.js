@@ -33,16 +33,13 @@ export default function TelaDentroLista({navigation}) {
                 </TouchableOpacity>
             </View>
 
+            
+
             <ScrollView showsVerticalScrollIndicator={false} className='mb-20'>
                 <View>
-                    <CardTarefa />
-                    <CardTarefa />
-                    <CardTarefa />
-                    <CardTarefa />
-                    <CardTarefa />
-                    <CardTarefa />
-                    <CardTarefa />
-                    <CardTarefa />
+                    <TouchableOpacity onPress={() => navigation.navigate('TelaAtualizar')}>
+                        <CardTarefa />
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
 

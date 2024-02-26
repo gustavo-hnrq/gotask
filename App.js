@@ -32,13 +32,13 @@ export default function App() {
         screenOptions={{
           headerShown: false
         }}
-        initialRouteName='Startpage'>
+        initialRouteName='StartPage'>
           <Rota.Screen name="StartPage" component={StartPage} />
           <Rota.Screen name="TelaLista" component={TelaLista} />
           <Rota.Screen name="CriarLista" component={CriarLista} />
           <Rota.Screen name="CriarTarefa" component={CriarTarefa} />
-          <Rota.Screen name="TelaAtualizar" component={TelaAtualizar} />
           <Rota.Screen name="TelaDentroLista" component={TelaDentroLista} />
+          <Rota.Screen name="TelaAtualizar" component={TelaAtualizar} />
           <Rota.Screen name="CardLista" component={CardLista} />
         </Rota.Navigator>
        </NavigationContainer>

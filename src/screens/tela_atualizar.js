@@ -2,43 +2,43 @@ import { Text, View, TouchableOpacity, TextInput } from 'react-native';
 import Icone from 'react-native-vector-icons/Feather';
 
 
-
 export default function TelaAtualizar ({navigation}) {
     
     return(
-
-        <View className='bg-[#F9F9F9]'>
+        <View className='h-full px-5 mt-16'>
             <View className='flex-row justify-between items-center'>
-                <Text className='text-3xl  font-extrabold'>Nome da Tarefa</Text>
+                <Text className='text-3xl font-poppinsBold'>Nome da Tarefa</Text>
 
                 <View>
                     <TouchableOpacity activeOpacity={0.50} className='flex-row align-center items-center' onPress={() => navigation.goBack()}>
                         <Icone name="chevron-left" size={26} color="#D047FF" />
-                        <Text className='text-fuchsia-500 text-lg'>Voltar</Text>
+                        <Text className='text-fuchsia-500 text-lg font-poppinsMedium'>Voltar</Text>
                     </TouchableOpacity>
                 </View>
             </View>
 
-            <Text className='text-lx mt-1 font-bold text-gray-400'>Edite sua tarefa</Text>
+            <Text className='text-xl mt-1 font-poppinsMedium text-gray-400'>Edite sua tarefa</Text>
 
             
             <View className='mt-5'>
-                <Text className='text-xl mt-5 font-extrabold' >Titulo</Text>
-                <TextInput className='mt-2 border-solid border-2 border-gray-300 rounded-md p-2	' placeholder='Escreva o nome da sua tarefa...'/>
+                <Text className='text-xl mt-5 font-poppinsMedium ' >Titulo</Text>
+                <TextInput className='border border-gray-300 mt-4 rounded-md p-3 py-5 text-xl bg-white	' placeholder='Escreva o nome da sua tarefa...'/>
             </View>
 
-            <View className='mt-5'>
-                <Text className='text-xl mt-5 font-extrabold' >Categoria</Text>
-                <TextInput className='mt-2 border-solid border-2 border-gray-300 rounded-md p-2' placeholder='Selecione a categoria'/>
+            <View>
+                <Text className='text-xl mt-5 font-poppinsMedium ' >Descrição</Text>
+                <TextInput className='border border-gray-300 bg-white mt-4 rounded-md p-3 py-5 text-xl' placeholder='Escreva aqui a descrição da sua tarefa...' maxLength={112} multiline={true} />
             </View>
 
-            <View className='mt-5'>
-                <Text className='text-xl mt-5 font-extrabold' >Descrição</Text>
-                <TextInput className='mt-2 border-solid border-2 border-gray-300 rounded-md p-2 pb-20' placeholder='Escreva aqui a descrição da sua tarefa...'/>
+            <View>
+                <Text className='text-xl mt-5 font-poppinsMedium ' >Categoria</Text>
+                <TextInput className='border border-gray-300 mt-4 rounded-md p-3 py-5 text-xl bg-white' placeholder='Selecione a categoria'/>
             </View>
 
-            <View className='justify-center mt-5'>
-              <TouchableOpacity activeOpacity={0.50} className='mt-5 bg-[#D047FF] p-4 rounded-md'><Text className='text-white text-center'>CRIAR</Text></TouchableOpacity>
+            <View className='items-center justify-center mt-5'>
+                <TouchableOpacity activeOpacity={0.75} className='bg-fuchsia-500 w-full h-12 rounded-lg m-5 px-5 py-2.5 mb-5 justify-center items-center'>
+                        <Text className='font-poppinsBold text-white text-lg items-center'>Atualizar</Text>
+                </TouchableOpacity>
             </View>
         </View>
         

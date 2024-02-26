@@ -16,7 +16,6 @@ export default function CardTarefa ({navigation}) {
 
   return(
       <View>
-        <TouchableOpacity onPress={() => navigation.navigate('TelaAtualizar')}>
           <View
           className={`border border-gray-300 mt-4 rounded-md p-3 py-5 ${checked ? 'bg-zinc-100' : 'bg-white'} justify-between flex-row align-center items-center`}>
             {/* BOTÃO CHECK TAREFA */}
@@ -41,7 +40,6 @@ export default function CardTarefa ({navigation}) {
                 </TouchableOpacity>
               </View>
           </View>
-        </TouchableOpacity>
       </View>
 
       

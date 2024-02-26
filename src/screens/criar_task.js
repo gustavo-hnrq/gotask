@@ -30,7 +30,7 @@ export default function CriarTarefa ({navigation}) {
         {label: 'Pessoal', value: 'pessoal'},
         {label: 'Comercial', value: 'comercial'},
         {label: 'Outros', value: 'outro'}
-    ]
+    ];
 
     return(
 
