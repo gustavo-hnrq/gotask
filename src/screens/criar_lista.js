@@ -2,10 +2,7 @@ import React, {useState} from "react";
 import { Text, View, TouchableOpacity, TextInput } from 'react-native';
 // import { Button, Icon } from 'react-native-magnus';
 import Icone from 'react-native-vector-icons/Feather';
-// import axios from "axios";
-
-
-
+import axios from "axios";
 
 export default function CriarLista ({navigation}) {
 

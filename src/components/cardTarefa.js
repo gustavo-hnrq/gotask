@@ -1,6 +1,7 @@
 import { Text, View, TouchableOpacity} from 'react-native';
 import Icon from '@expo/vector-icons/Feather';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 
 export default function CardTarefa ({navigation}) {
@@ -13,6 +14,42 @@ export default function CardTarefa ({navigation}) {
   const handleCheckClick = () => {
     setChecked(!checked);
   };
+
+  useEffect(() => {
+    
+    axios.get(`http://172.16.2.8:3000/task`)
+      .then(response => {
+        const tarefa = response.data
+        
+        const tarefa_tratada = []
+
+        for (let index = 0; index < tarefa.length; index++) {
+          const nome = tarefa[index].nomeTarefa
+
+          const objeto = {"nome": nome, "id" : index + 1}
+          tarefa_tratada[index] = objeto
+          // tarefa_tratada[index] = {"nome": tarefa[index].nomeTarefa, "id" : index}
+          
+
+          setTarefa(tarefa_tratada[0])
+         
+        }
+   
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
+  function deletar(id) {
+    console.log("só o id", id)
+    axios.delete(`http://172.16.2.8:3000/task/${id}`)
+    .then(res => {
+      if (res.status == 200){
+        console.log('funfo')
+      }
+    })
+  }
 
   return(
       <View>
@@ -30,7 +67,7 @@ export default function CardTarefa ({navigation}) {
             </View>
 
               <View>
-                <Text className={`text-md font-poppinsRegular mt-1 ${checked ? 'line-through' : ''}`}>{textoLimitado}</Text>
+                <Text className={`text-md font-poppinsRegular mt-1 ${checked ? 'line-through' : ''}`}>{tarefa.nome}</Text>
               </View>
 
               <View >

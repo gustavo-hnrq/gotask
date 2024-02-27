@@ -77,7 +77,6 @@ export default function CriarTarefa ({navigation}) {
             </View>
         </View>
         
-
     )
 
 }
