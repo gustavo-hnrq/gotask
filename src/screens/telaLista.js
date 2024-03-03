@@ -6,7 +6,6 @@ export default function TelaLista({navigation}) {
       <View className='h-full px-5 mt-20 pb-14'>         
         {/* SEÇÃO DE MESSAGEM BEM-VINDO E PARTE DE CRIAR LISTA */}
         <Text Text className='text-3xl mb-3 font-poppinsBold'>Bem-vindo 👋</Text>
-        <Text className='text-lg font-medium text-gray-400 font-poppinsRegular'>Você possui X tarefas pendentes</Text>
         {/* BOTÃO ADICIONAR */}
         <View className='items-center justify-center'>
           <TouchableOpacity

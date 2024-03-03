@@ -10,9 +10,9 @@ export default function CriarLista ({navigation}) {
    
     const enviar = (e) => {
 
-        axios.post('http://172.16.2.185:3000/listP',{ 
-            nomeList: Nome,
-           })  
+        axios.post("http://172.16.2.203:3000/listP", {
+          nomeList: Nome,
+        });  
     }
     
     return(

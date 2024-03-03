@@ -1,82 +1,126 @@
-import React, {useState} from 'react';
-import { Text, View, TouchableOpacity, TextInput } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { Text, View, TouchableOpacity, TextInput } from "react-native";
 // import { Button, Icon } from 'react-native-magnus';
-import Icone from 'react-native-vector-icons/Feather';
-// import axios from 'axios';
-import RNPickerSelect from 'react-native-picker-select';
+import Icone from "react-native-vector-icons/Feather";
+import axios from "axios";
+import RNPickerSelect from "react-native-picker-select";
 
 
-export default function CriarTarefa ({navigation}) {
 
-    const [Titulo, setTitulo] = useState([])
-    const [Descricao, setDescricao] = useState([])
-    const [Id, setId] = useState([1])
-    const [Categoria, setCategoria] = useState([])
+export default function CriarTarefa({ navigation}) {
+  const [Titulo, setTitulo] = useState("");
+  const [Descricao, setDescricao] = useState("");
+  const [listaID, setId] = useState('');
+  const [Categoria, setCategoria] = useState("");
+ 
+  useEffect(() => {
+    axios
+      .get(`http://172.16.2.203:3000/list`)
+      .then((response) => {
+        const lista = response.data;
 
-    const enviar = (e) => {
+        const lista_tratada = [];
 
-        axios.post('http://172.16.2.185:3000/taskP',{ // Mudar a url para a da API
-            Titulo:Titulo,
-            Descricao:Descricao,
-            Categoria:String(Categoria)
-        })  
-    }
+        for (let index = 0; index < lista.length; index++) {
+          const nome = lista[index].nomeLista;
 
-    const placeholder = {
-        label: 'Selecione a categoria...',
-        value: null,
-      };
-    const options = [
-        {label: 'Pessoal', value: 'pessoal'},
-        {label: 'Comercial', value: 'comercial'},
-        {label: 'Outros', value: 'outro'}
-    ];
+          const objeto = { nome: nome, id: index + 1 };
+          lista_tratada[index] = objeto;
 
-    return(
+          setId(lista_tratada[0].id);
+        }
+       
+      })
+      .catch((error) => {
+        console.error("Erro", error);
+      });
+  }, []);
 
-        <View className='h-full px-5 mt-20 pb-14'>
-            <View className='flex-row justify-between items-center'>
-                <Text className='text-3xl font-poppinsBold'>Nova tarefa</Text>
+  const enviar = (e) => {
 
-                <View>
-                    <TouchableOpacity
-                    onPress={() => navigation.goBack()}
-                    activeOpacity={0.50} className='flex-row align-center items-center'>
-                        <Icone name="chevron-left" size={26} color="#D047FF" />
-                        <Text className='text-fuchsia-500 text-lg'>Voltar</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-            
-            <View className='mt-5'>
-                <Text className='text-xl mt-5 font-poppinsMedium'>Titulo</Text>
-                <TextInput className='border border-gray-300 mt-4 rounded-md p-3 py-5 text-xl bg-white' placeholder='Escreva o nome da sua tarefa...' value={Titulo} onChangetext={(text) => setTitulo(text)} maxLength={28}/>
-            </View>
+    axios.post("http://172.16.2.203:3000/taskP", {
+      // Mudar a url para a da API
+      fk_idLista: listaID,
+      nomeTask: Titulo,
+      descricao: Descricao,
+      tipo: Categoria,
+    });
+  };
 
-            <View>
-                <Text className='text-xl mt-5 font-poppinsMedium'>Descrição</Text>
-                <TextInput className='border border-gray-300 bg-white mt-4 rounded-md p-3 py-5 text-xl' placeholder='Escreva aqui a descrição da sua tarefa...' value={Descricao} onChange={(text) => setDescricao(text) } maxLength={112} multiline={true}/>
-            </View>
+  const placeholder = {
+    label: "Selecione a categoria...",
+    value: null,
+  };
+  const options = [
+    { label: "Pessoal", value: "pessoal" },
+    { label: "Comercial", value: "comercial" },
+    { label: "Outros", value: "outro" },
+  ];
 
-            <View>
-            <Text className='text-xl mt-5 font-poppinsMedium'>Categoria</Text>
-                <View className='border border-gray-300 bg-white mt-4 rounded-md text-xl'>
-                    <RNPickerSelect
-                        placeholder={placeholder}
-                        items={options}
-                        onValueChange={(value) => setCategoria(value)}
-                        value={Categoria}
-                    />
-                </View>
-            </View>
+  return (
+    <View className="h-full px-5 mt-20 pb-14">
+      <View className="flex-row justify-between items-center">
+        <Text className="text-3xl font-poppinsBold">Nova tarefa</Text>
 
-            <View className='items-center justify-center'>
-                <TouchableOpacity activeOpacity={0.75} onPress={enviar} className='bg-fuchsia-500 w-full h-12 rounded-lg m-5 px-5 py-2.5 mb-5 justify-center items-center'>
-                        <Text className='font-poppinsBold text-white text-lg items-center'>Adicionar Tarefa</Text>
-                </TouchableOpacity>
-            </View>
+        <View>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            activeOpacity={0.5}
+            className="flex-row align-center items-center"
+          >
+            <Icone name="chevron-left" size={26} color="#D047FF" />
+            <Text className="text-fuchsia-500 text-lg">Voltar</Text>
+          </TouchableOpacity>
         </View>
-        
-    )
+      </View>
 
+      <View className="mt-5">
+        <Text className="text-xl mt-5 font-poppinsMedium">Titulo</Text>
+        <TextInput
+          value={Titulo}
+          onChangeText={(text) => setTitulo(text)}
+          className="border border-gray-300 mt-4 rounded-md p-3 py-5 text-xl bg-white"
+          placeholder="Escreva o nome da sua tarefa..."
+          maxLength={28}
+        />
+      </View>
+
+      <View>
+        <Text className="text-xl mt-5 font-poppinsMedium">Descrição</Text>
+        <TextInput
+          name="Descricao"
+          value={Descricao}
+          onChangeText={(text) => setDescricao(text)}
+          className="border border-gray-300 bg-white mt-4 rounded-md p-3 py-5 text-xl"
+          placeholder="Escreva aqui a descrição da sua tarefa..."
+          maxLength={112}
+          multiline={true}
+        />
+      </View>
+
+      <View>
+        <Text className="text-xl mt-5 font-poppinsMedium">Categoria</Text>
+        <View className="border border-gray-300 bg-white mt-4 rounded-md text-xl">
+          <RNPickerSelect
+            placeholder={placeholder}
+            items={options}
+            onValueChange={(text) => setCategoria(text)}
+            value={Categoria}
+          />
+        </View>
+      </View>
+
+      <View className="items-center justify-center">
+        <TouchableOpacity
+          activeOpacity={0.75}
+          onPress={enviar}
+          className="bg-fuchsia-500 w-full h-12 rounded-lg m-5 px-5 py-2.5 mb-5 justify-center items-center"
+        >
+          <Text className="font-poppinsBold text-white text-lg items-center">
+            Adicionar Tarefa
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 }
