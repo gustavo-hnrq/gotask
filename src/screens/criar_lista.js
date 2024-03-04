@@ -1,22 +1,25 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Text, View, TouchableOpacity, TextInput } from 'react-native';
-// import { Button, Icon } from 'react-native-magnus';
 import Icone from 'react-native-vector-icons/Feather';
 import axios from "axios";
 
-export default function CriarLista ({navigation}) {
-
-    const [Nome, setNome] = useState('')
+export default function CriarLista ({ navigation }) {
+    const [Nome, setNome] = useState('');
    
-    const enviar = (e) => {
-
-        axios.post("http://172.16.2.203:3000/listP", {
-          nomeList: Nome,
-        });  
+    const enviar = () => {
+        axios.post("https://blue-violet-seahorse-suit.cyclic.app/listP", {
+            nomeList: Nome,
+        }).then(() => {
+            // Atualize a lista após a criação bem-sucedida
+            navigation.goBack();
+            // ou
+            // navigation.navigate('TelaLista'); // Supondo que o nome da tela seja TelaLista
+        }).catch((error) => {
+            console.error("Erro ao criar lista:", error);
+        });
     }
     
     return(
-
         <View className='h-full px-5 mt-20 pb-14'>
             <View className='flex-row justify-between items-center'>
                 <Text className='text-3xl mt-5 font-poppinsBold'>Criar Lista</Text>
@@ -35,12 +38,10 @@ export default function CriarLista ({navigation}) {
             </View>
 
             <View className='items-center justify-center'>
-            <TouchableOpacity activeOpacity={0.75} onPress={enviar} className='bg-fuchsia-500 w-full h-12 rounded-lg m-5 px-5 py-2.5 mb-5 justify-center items-center'>
-                    <Text className='font-poppinsBold text-white text-lg items-center'>Adicionar Tarefa</Text>
+                <TouchableOpacity activeOpacity={0.75} onPress={enviar} className='bg-fuchsia-500 w-full h-12 rounded-lg m-5 px-5 py-2.5 mb-5 justify-center items-center'>
+                    <Text className='font-poppinsBold text-white text-lg items-center'>Adicionar Lista</Text>
                 </TouchableOpacity>
             </View>
-
         </View>
     )
-
 }

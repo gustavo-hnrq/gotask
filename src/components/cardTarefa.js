@@ -16,14 +16,14 @@ export default function CardTarefa({ navigation }) {
 
   const handleCheckClick = (id) => {
     if (!checked) {
-      axios.put(`http://172.16.2.203:3000/feito/${id}`).then((res) => {
+      axios.put(`https://blue-violet-seahorse-suit.cyclic.app/feito/${id}`).then((res) => {
         if (res.status == 200) {
           setChecked(!checked);
           console.log("funfo");
         }
       });
     } else {
-      axios.put(`http://172.16.2.203:3000/naofeito/${id}`).then((res) => {
+      axios.put(`https://blue-violet-seahorse-suit.cyclic.app/naofeito/${id}`).then((res) => {
         if (res.status == 200) {
           setChecked(!checked);
           console.log("funfo");
@@ -34,7 +34,7 @@ export default function CardTarefa({ navigation }) {
 
   useEffect(() => {
     axios
-      .get(`http://172.16.2.203:3000/task`)
+      .get(`https://blue-violet-seahorse-suit.cyclic.app/task`)
       .then((response) => {
         const tarefa = response.data;
 
@@ -43,7 +43,7 @@ export default function CardTarefa({ navigation }) {
         for (let index = 0; index < tarefa.length; index++) {
           const nome = tarefa[index].nomeTarefa;
 
-          const objeto = { nome: nome, id: index + 2 };
+          const objeto = { nome: nome, id: index + 1 };
           tarefa_tratada[index] = objeto;
 
           setTarefa(tarefa_tratada[0]);
@@ -56,7 +56,7 @@ export default function CardTarefa({ navigation }) {
 
   function deletar(id) {
     console.log("só o id", id);
-    axios.delete(`http://172.16.2.203:3000/task/${id}`).then((res) => {
+    axios.delete(`https://blue-violet-seahorse-suit.cyclic.app//task/${id}`).then((res) => {
       if (res.status == 200) {
         console.log("funfo");
       }

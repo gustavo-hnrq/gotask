@@ -4,37 +4,14 @@ import CardTarefa from '../components/cardTarefa';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 
-export default function TelaDentroLista({navigation}) {
+export default function TelaDentroLista({navigation, route}) {
     const texto = 'Nome da Lista';
     const limiteCaracteres = 19; // Número máximo de caracteres
     const textoLimitado = texto.slice(0, limiteCaracteres) + (texto.length > limiteCaracteres ? '' : '');
 
-    const [nomeLista, setNome ]= useState("")
+    const { nomeLista, listaId } = route.params;
 
-    useEffect(() => {
-        axios
-          .get(`http://172.16.2.203:3000/list`)
-          .then((response) => {
-            const lista = response.data;
-    
-            const lista_tratada = [];
-    
-            for (let index = 0; index < lista.length; index++) {
-              const nome = lista[index].nomeLista;
-    
-              const objeto = { nome: nome, id: index + 1 };
-              lista_tratada[index] = objeto;
-    
-              setNome(lista_tratada[0].nome);
-            }
-           
-          })
-          .catch((error) => {
-            console.error("Erro", error);
-          });
-
-      }, []);
-
+    console.log(listaId)
     return(
         <View className='h-full px-5 mt-16'>
             <View>
@@ -53,22 +30,19 @@ export default function TelaDentroLista({navigation}) {
             {/* BOTÃO ADICIONAR */}
             <View className='items-center justify-center'>
                 <TouchableOpacity
-                onPress={() => navigation.navigate('CriarTarefa')}
+                onPress={() => navigation.navigate(`CriarTarefa`, {id: listaId})}
                 activeOpacity={0.75} className='bg-fuchsia-500 w-full h-12 rounded-lg m-5 px-5 py-2.5 mb-5 justify-center items-center'>
                     <Text className='font-poppinsBold text-white text-lg items-center'>Adicionar Tarefa</Text>
                 </TouchableOpacity>
             </View>
 
-            
-
             <ScrollView showsVerticalScrollIndicator={false} className='mb-20'>
                 <View>
                     <TouchableOpacity onPress={() => navigation.navigate('TelaAtualizar')}>
-                        <CardTarefa />
+                        <CardTarefa listaId={listaId} onListDelete={() => deletar(listaId)}   />
                     </TouchableOpacity>
                 </View>
             </ScrollView>
-
         </View>
-  );
+    );
 }

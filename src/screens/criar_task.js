@@ -7,40 +7,20 @@ import RNPickerSelect from "react-native-picker-select";
 
 
 
-export default function CriarTarefa({ navigation}) {
+export default function CriarTarefa({ navigation, route}) {
   const [Titulo, setTitulo] = useState("");
   const [Descricao, setDescricao] = useState("");
-  const [listaID, setId] = useState('');
   const [Categoria, setCategoria] = useState("");
+
+  const { id } = route.params;
  
-  useEffect(() => {
-    axios
-      .get(`http://172.16.2.203:3000/list`)
-      .then((response) => {
-        const lista = response.data;
-
-        const lista_tratada = [];
-
-        for (let index = 0; index < lista.length; index++) {
-          const nome = lista[index].nomeLista;
-
-          const objeto = { nome: nome, id: index + 1 };
-          lista_tratada[index] = objeto;
-
-          setId(lista_tratada[0].id);
-        }
-       
-      })
-      .catch((error) => {
-        console.error("Erro", error);
-      });
-  }, []);
 
   const enviar = (e) => {
-
-    axios.post("http://172.16.2.203:3000/taskP", {
+    const teste =  new Number(id)
+ 
+    axios.post("https://blue-violet-seahorse-suit.cyclic.app/taskP", {
       // Mudar a url para a da API
-      fk_idLista: listaID,
+      fk_idLista: teste,
       nomeTask: Titulo,
       descricao: Descricao,
       tipo: Categoria,
@@ -113,7 +93,7 @@ export default function CriarTarefa({ navigation}) {
       <View className="items-center justify-center">
         <TouchableOpacity
           activeOpacity={0.75}
-          onPress={enviar}
+          onPress={() => enviar()}
           className="bg-fuchsia-500 w-full h-12 rounded-lg m-5 px-5 py-2.5 mb-5 justify-center items-center"
         >
           <Text className="font-poppinsBold text-white text-lg items-center">

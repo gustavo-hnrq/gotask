@@ -13,7 +13,7 @@ export default function TelaAtualizar({ navigation }) {
 
   useEffect(() => {
     axios
-      .get(`http://172.16.2.203:3000/task`)
+      .get(`https://blue-violet-seahorse-suit.cyclic.app/task`)
       .then((response) => {
         const tarefa = response.data;
 
@@ -37,7 +37,7 @@ export default function TelaAtualizar({ navigation }) {
   function atualizar(id) {
     console.log("só o id", id);
     axios
-      .put(`http://172.16.3.23:3000/task/${id}`, {
+      .put(`https://blue-violet-seahorse-suit.cyclic.app/task/${id}`, {
         nomeTask: nomeTask,
         descricao: descricao,
         tipo: tipo,
