@@ -3,7 +3,7 @@ import Icon from "@expo/vector-icons/Feather";
 import { useState, useEffect } from "react";
 import api from '../service/api';
 
-export default function CardTarefa({ navigation }) {
+export default function CardTarefa({ taskId, listaId, navigation }) {
   const texto = "Esse é um belo de exemplo de task possivelmente grande";
   const limiteCaracteres = 28; // Número máximo de caracteres
   const textoLimitado =
@@ -13,17 +13,20 @@ export default function CardTarefa({ navigation }) {
   // SETAR TAREFA COMO FEITA OU NÃO FEITA
   const [checked, setChecked] = useState(false);
   const [tarefa, setTarefa] = useState("");
+  const [nome, setNome] = useState("");
+  const [id, setID] = useState('');
 
-  const handleCheckClick = (id) => {
+
+  const handleCheckClick = (taskId) => {
     if (!checked) {
-      api.put(`/feito/${id}`).then((res) => {
+      api.put(`/feito/${taskId}`).then((res) => {
         if (res.status == 200) {
           setChecked(!checked);
           console.log("funfo");
         }
       });
     } else {
-      api.put(`/naofeito/${id}`).then((res) => {
+      api.put(`/naofeito/${taskId}`).then((res) => {
         if (res.status == 200) {
           setChecked(!checked);
           console.log("funfo");
@@ -33,38 +36,43 @@ export default function CardTarefa({ navigation }) {
   };
 
   useEffect(() => {
-    api
-      .get(`/task`)
-      .then((response) => {
-        const tarefa = response.data;
-
-        const tarefa_tratada = [];
-
-        for (let index = 0; index < tarefa.length; index++) {
-          const nome = tarefa[index].nomeTarefa;
-
-          const objeto = { nome: nome, id: index + 1 };
-          tarefa_tratada[index] = objeto;
-
-          setTarefa(tarefa_tratada[0]);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    fetchTasks()
   }, []);
 
-  function deletar(id) {
-    console.log("só o id", id);
-    api.delete(`/task/${id}`).then((res) => {
+  const fetchTasks = () => {
+    api
+      .get(`/taskLista/${listaId}`)
+      .then((response) => {
+        const tarefa = response.data[0];
+        const tarefa_tratada = tarefa.map((item, index) => ({
+          nome: item.nomeTarefa,
+          id: index + 1
+        }));
+        setTarefa(tarefa_tratada);
+        const selectedTask = tarefa_tratada.find(item => item.id === taskId);
+        if (selectedTask) {
+          setNome(selectedTask.nome);
+          setID(selectedTask.id);
+        }
+
+      })
+      .catch((error) => {
+        console.error("Erro", error);
+      });
+  };
+
+  function deletar(taskId) {
+    console.log("só o id", taskId);
+    api.delete(`/task/${taskId}`).then((res) => {
       if (res.status == 200) {
         console.log("funfo");
       }
     });
   }
 
+
   return (
-    <View>
+    <View key={taskId}>
       <View
         className={`border border-gray-300 mt-4 rounded-md p-3 py-5 ${
           checked ? "bg-zinc-100" : "bg-white"
@@ -75,7 +83,7 @@ export default function CardTarefa({ navigation }) {
           <TouchableOpacity
             activeOpacity={0.5}
             className="ml-1"
-            onPress={() => handleCheckClick(tarefa.id)}
+            onPress={() => handleCheckClick(id)}
           >
             {checked ? (
               <Icon name="check-square" size={22} color="black" />
@@ -91,7 +99,7 @@ export default function CardTarefa({ navigation }) {
               checked ? "line-through" : ""
             }`}
           >
-            {tarefa.nome}
+            {nome}
           </Text>
         </View>
 
@@ -99,7 +107,7 @@ export default function CardTarefa({ navigation }) {
           <TouchableOpacity
             activeOpacity={0.5}
             className="w-7 h-7 justify-center items-center"
-            onPress={() => deletar(tarefa.id)}
+            onPress={() => deletar(id)}
           >
             <Icon name="trash" size={22} color="#d946ef" />
             <View className="absolute bg-fuchsia-500 h-8 w-8 opacity-20 rounded-full" />

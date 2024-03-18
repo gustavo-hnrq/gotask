@@ -8,6 +8,7 @@ export default function CardLista({ listaId, onListDelete }) {
   const [list, setLists] = useState([]);
   const [nomeLista, setNomeLista] = useState("");
 
+
   useEffect(() => {
     api
       .get(`/list`)
@@ -30,6 +31,7 @@ export default function CardLista({ listaId, onListDelete }) {
       });
   }, []);
 
+  
   function deletar(id) {
     api.delete(`/list/${id}`).then((res) => {
       if (res.status == 200) {

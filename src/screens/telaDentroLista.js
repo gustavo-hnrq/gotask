@@ -2,16 +2,46 @@ import { Text, View, TouchableOpacity, ScrollView, TextInput} from 'react-native
 import Icon from '@expo/vector-icons/Feather';
 import CardTarefa from '../components/cardTarefa';
 import React, {useEffect, useState} from 'react';
+import api from '../service/api';
 
 
-export default function TelaDentroLista({navigation, route}) {
+export default function TelaDentroLista({navigation, route, taskId}) {
     const texto = 'Nome da Lista';
-    const limiteCaracteres = 19; // Número máximo de caracteres
+    const limiteCaracteres = 19; // NÃºmero mÃ¡ximo de caracteres
     const textoLimitado = texto.slice(0, limiteCaracteres) + (texto.length > limiteCaracteres ? '' : '');
 
     const { nomeLista, listaId } = route.params;
 
-    console.log(listaId)
+    const [tarefa, setTarefa] = useState([]);
+    const [nome, setNome] = useState("");  
+
+  useEffect(() => {
+    fetchTasks(); // Chamada inicial para carregar as listas
+  }, []);
+
+  // FunÃ§Ã£o para buscar as listas da API
+  const fetchTasks = () => {
+    api
+      .get(`/taskLista/${listaId}`)
+      .then((response) => {
+        const tarefa = response.data[0];
+        const tarefa_tratada = tarefa.map((item, index) => ({
+          nome: item.nomeTarefa,
+          id: index + 1
+        }));
+        setTarefa(tarefa_tratada);
+        const selectedTask = tarefa_tratada.find(item => item.id === taskId);
+        if (selectedTask) {
+          setNome(selectedTask.nome);
+         
+        }
+      })
+      .catch((error) => {
+        console.error("Erro", error);
+      });
+  };
+
+
     return(
         <View className='h-full px-5 mt-16'>
             <View>
@@ -27,7 +57,7 @@ export default function TelaDentroLista({navigation, route}) {
                 <TextInput maxLength={19} cursorColor={'black'} multiline={false} className='text-3xl mt-5 mb-3 font-poppinsBold'>{nomeLista}</TextInput>
             </View>
 
-            {/* BOTÃO ADICIONAR */}
+            {/* BOTÃƒO ADICIONAR */}
             <View className='items-center justify-center'>
                 <TouchableOpacity
                 onPress={() => navigation.navigate(`CriarTarefa`, {id: listaId})}
@@ -37,11 +67,13 @@ export default function TelaDentroLista({navigation, route}) {
             </View>
 
             <ScrollView showsVerticalScrollIndicator={false} className='mb-20'>
-                <View>
-                    <TouchableOpacity onPress={() => navigation.navigate('TelaAtualizar')}>
-                        <CardTarefa listaId={listaId} onListDelete={() => deletar(listaId)}   />
-                    </TouchableOpacity>
-                </View>
+              <View>
+                {tarefa.map((tarefa) => (
+                  <TouchableOpacity key={tarefa.id} onPress={() => navigation.navigate('TelaAtualizar', { taskId: tarefa.id, listaId })}>
+                    <CardTarefa taskId={tarefa.id} listaId={listaId} onListDelete={() => deletar(listaId)}   />
+                  </TouchableOpacity>
+                 ))}
+              </View>
             </ScrollView>
         </View>
     );

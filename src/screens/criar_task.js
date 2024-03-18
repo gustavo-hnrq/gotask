@@ -13,14 +13,14 @@ export default function CriarTarefa({ navigation, route}) {
   const [Categoria, setCategoria] = useState("");
 
   const { id } = route.params;
- 
-
+  
+  console.log(id)
   const enviar = (e) => {
     const teste =  new Number(id)
- 
+   
     api.post("/taskP", {
       // Mudar a url para a da API
-      fk_idLista: teste,
+      fk_idLista: id,
       nomeTask: Titulo,
       descricao: Descricao,
       tipo: Categoria,

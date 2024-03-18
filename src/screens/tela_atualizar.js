@@ -4,35 +4,41 @@ import React, { useState, useEffect } from "react";
 import RNPickerSelect from "react-native-picker-select";
 import api from '../service/api'
 
-export default function TelaAtualizar({ navigation }) {
+export default function TelaAtualizar({ navigation, route}) {
   const [nomeTask, setNome] = useState("");
   const [descricao, setDescricao] = useState("");
   const [tipo, setTipo] = useState("");
   const [tarefa, setTarefa] = useState("");
+  const [id, setID] = useState('');
 
+  const {listaId, taskId} = route.params;
 
   useEffect(() => {
+    fetchTasks()
+  }, []);
+
+  const fetchTasks = () => {
     api
-      .get(`/task`)
+      .get(`/taskLista/${listaId}`)
       .then((response) => {
-        const tarefa = response.data;
-
-        const tarefa_tratada = [];
-
-        for (let index = 0; index < tarefa.length; index++) {
-          const nome = tarefa[index].nomeTarefa;
-
-          const objeto = { nome: nome, id: index + 1 };
-          tarefa_tratada[index] = objeto;
-
-          setTarefa(tarefa_tratada[0]);
+        const tarefa = response.data[0];
+        const tarefa_tratada = tarefa.map((item, index) => ({
+          nome: item.nomeTarefa,
+          id: index + 1
+        }));
+        setTarefa(tarefa_tratada);
+        const selectedTask = tarefa_tratada.find(item => item.id === taskId);
+        if (selectedTask) {
+          setNome(selectedTask.nome);
+          setID(selectedTask.id);
         }
+
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Erro", error);
       });
-      
-  }, []);
+  };
+
 
   function atualizar(id) {
     console.log("só o id", id);
@@ -49,6 +55,7 @@ export default function TelaAtualizar({ navigation }) {
       });
   }
 
+
   const placeholder = {
     label: "Selecione a categoria...",
     value: null,
@@ -62,7 +69,7 @@ export default function TelaAtualizar({ navigation }) {
   return (
     <View className="h-full px-5 mt-16">
       <View className="flex-row justify-between items-center">
-        <Text className="text-3xl font-poppinsBold">{tarefa.nome}</Text>
+        <Text className="text-3xl font-poppinsBold">{nomeTask}</Text>
 
         <View>
           <TouchableOpacity
@@ -119,7 +126,7 @@ export default function TelaAtualizar({ navigation }) {
       <View className="items-center justify-center mt-5">
         <TouchableOpacity
           activeOpacity={0.75}
-          onPress={() => atualizar(tarefa.id)}
+          onPress={() => atualizar(id)}
           className="bg-fuchsia-500 w-full h-12 rounded-lg m-5 px-5 py-2.5 mb-5 justify-center items-center"
         >
           <Text className="font-poppinsBold text-white text-lg items-center">
