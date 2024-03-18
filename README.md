@@ -1,6 +1,9 @@
 
 
-```
+``
+
+
+
 # GoTask
 
 ## Descrição
@@ -10,6 +13,8 @@ GoTask é um aplicativo de gerenciamento de tarefas desenvolvido utilizando Reac
 - React Native: Um framework JavaScript para criar aplicativos móveis multiplataforma.
 - Nativewind: Uma biblioteca de componentes para React Native que oferece um conjunto de elementos de interface do usuário pré-estilizados, seguindo o design do sistema operacional.
 - Expo: Uma plataforma para criar aplicativos React Native rapidamente, fornecendo ferramentas para desenvolvimento, implantação e compartilhamento de aplicativos.
+
+```
 
 ## Como Rodar o App com Expo
 1. Certifique-se de ter o Node.js instalado em seu sistema. Você pode baixá-lo em: [Node.js](https://nodejs.org/)
